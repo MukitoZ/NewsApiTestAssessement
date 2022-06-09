@@ -30,6 +30,17 @@
         <argument
             android:name="selectedSources"
             app:argType="string" />
+        <action
+            android:id="@+id/action_articleNewsFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="org.newsapi.newsapitestassessment.fragment.webview.WebViewFragment"
+        android:label="WebViewFragment" >
+        <argument
+            android:name="url"
+            app:argType="string" />
     </fragment>
 
 </navigation>

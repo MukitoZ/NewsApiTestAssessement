@@ -1,7 +1,9 @@
 package org.newsapi.newsapitestassessment.fragment.article
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +12,7 @@ import org.newsapi.common.binding_adapter.ImageViewBindingAdapter.loadImage
 import org.newsapi.common.entity.everything.Article
 import org.newsapi.newsapitestassessment.databinding.LayoutArticleItemBinding
 
-class ArticleNewsPagingAdapter :
+class ArticleNewsPagingAdapter(val getNavController: () -> NavController) :
     PagingDataAdapter<Article, ArticleNewsPagingAdapter.ArticleNewsViewHolder>(itemCallback) {
     private val differ = AsyncListDiffer(this, itemCallback)
 
@@ -23,10 +25,7 @@ class ArticleNewsPagingAdapter :
     }
 
     override fun onBindViewHolder(holder: ArticleNewsViewHolder, position: Int) {
-        val data = differ.currentList[position]
-        holder.binding.tvArticleTitle.text = data.title
-        holder.binding.tvArticleDescription.text = data.description
-        loadImage(holder.binding.ivImage, data.urlToImage)
+        getItem(position)?.let { holder.bind(it) }
     }
 
     override fun getItemCount(): Int = differ.currentList.size
@@ -45,5 +44,18 @@ class ArticleNewsPagingAdapter :
 
     inner class ArticleNewsViewHolder(
         val binding: LayoutArticleItemBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: Article) {
+            binding.tvArticleTitle.text = data.title
+            binding.tvArticleDescription.text = data.description
+            loadImage(binding.ivImage, data.urlToImage)
+            binding.root.setOnClickListener {
+                val dataUrl =
+                    ArticleNewsFragmentDirections.actionArticleNewsFragmentToWebViewFragment(
+                        url = data.url
+                    )
+                getNavController().navigate(dataUrl)
+            }
+        }
+    }
 }
