@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_news"
+    app:startDestination="@id/categoryFragment">
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="org.newsapi.newsapitestassessment.fragment.category.CategoryNewsFragment"
+        android:label="CategoryFragment">
+        <action
+            android:id="@+id/action_categoryFragment_to_sourceNewsFragment"
+            app:destination="@id/sourceNewsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sourceNewsFragment"
+        android:name="org.newsapi.newsapitestassessment.fragment.source.SourceNewsFragment"
+        android:label="SourceNewsFragment" >
+        <argument
+            android:name="selectedCategory"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_sourceNewsFragment_to_articleNewsFragment"
+            app:destination="@id/articleNewsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleNewsFragment"
+        android:name="org.newsapi.newsapitestassessment.fragment.article.ArticleNewsFragment"
+        android:label="ArticleNewsFragment" >
+        <argument
+            android:name="selectedSources"
+            app:argType="string" />
+    </fragment>
+
+</navigation>
